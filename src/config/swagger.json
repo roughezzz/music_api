@@ -1,0 +1,197 @@
+{
+    "swagger": "2.0",
+    "title" : "Music API Documentation",
+    "description" : "MUSIC API course for egghead",
+    "license": {
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+      },
+      "version": "1.0.0",
+      "host": "localhost:3000",
+      "basePath": "/api",
+      "tags": [
+        {
+          "name": "Songs",
+          "description": "API for Songs Endpoints"
+        }
+      ],
+      "schemes": ["http"],
+      "consumes": ["application/json"],
+      "produces": ["application/json"],
+      "paths" : {
+          "/songs" : {
+              "post" : {
+                  "tags" : ["Songs"],
+                  "summary" : "API Endpoint for Create Song",
+                  "description" : "Create new Song in Database",
+                  "parameters" : [
+                      {
+                        "name" : "song",
+                        "description" : "Songs params to create new songs",
+                        "in" : "body",
+                        "required" : "true",
+                        "schema" : {
+                            "$ref" : "#definitions/Song"
+                        } 
+                      }
+                  ],
+                  "produces" : ["application/json"],
+                  "responses" : {
+                      "200" : {
+                          "description" : "New Song Created",
+                          "schema" : {
+                              "$ref" : "#definitions/Song"
+                          }
+                      }
+                  }
+              },
+              "get" : {
+                "tags" : ["Songs"],
+                "summary" : "API Endpoint to Find all Songs",
+                "description" : "Find all Songs from Database",
+                "parameters" : [
+                    {
+                      "name" : "page",
+                      "type" : "integer",
+                      "description" : "Define the page index for the records",
+                      "in" : "query" 
+                    },
+                    {
+                        "name" : "perPage",
+                        "type" : "integer",
+                        "description" : "Define the limit for the records i.e 10",
+                        "in" : "query" 
+                      }
+                ],
+                "produces" : ["application/json"],
+                "responses" : {
+                    "200" : {
+                        "description" : "All the songs",
+                        "schema" : {
+                            "$ref" : "#definitions/Songs"
+                        }
+                    }
+                }
+              }
+          },
+          "/songs/{id}" : {
+              "parameters" : [
+                  {
+                      "name" : "id",
+                      "in" : "path",
+                      "required" : "true",
+                      "description" : "ID of the song",
+                      "type" : "string"
+                  }
+              ],
+              "get" : {
+                "tags" : ["Songs"],
+                "summary" : "API Endpoint to Find Single Song",
+                "description" : "Find Single Song from Database",
+                "produces" : ["application/json"],
+                "responses" : {
+                    "200" : {
+                        "description" : "Song has found",
+                        "schema" : {
+                            "$ref" : "#definitions/Song"
+                        }
+                    }
+                }
+              },
+              "delete" : {
+                "tags" : ["Songs"],
+                "summary" : "API Endpoint to Delete the Song",
+                "description" : "Delete the Song from Database",
+                "produces" : ["application/json"],
+                "responses" : {
+                    "200" : {
+                        "description" : "Song has deleted",
+                        "schema" : {
+                            "$ref" : "#definitions/Song"
+                        }
+                    }
+                }  
+              },
+              "put" : {
+                "tags" : ["Songs"],
+                "summary" : "API Endpoint to update Song",
+                "description" : "Update the Existing Song in Database",
+                "parameters" : [
+                    {
+                      "name" : "song",
+                      "description" : "Songs params to update the song",
+                      "in" : "body",
+                      "schema" : {
+                          "$ref" : "#definitions/UpdateSong"
+                      } 
+                    }
+                ],
+                "produces" : ["application/json"],
+                "responses" : {
+                    "200" : {
+                        "description" : "The Song has Updated",
+                        "schema" : {
+                            "$ref" : "#definitions/Song"
+                        }
+                    }
+                }
+              }
+          }
+      },
+      "definitions":{
+        "Song":{
+          "required": ["title","url"],
+          "properties":{
+            "_id": {
+              "type" : "string"
+            },
+            "title": {
+              "type" : "string"
+            },
+            "url": {
+              "type" : "string"
+            },
+            "rating": {
+              "type" : "integer",
+              "format" :"Int32"
+            }
+          }
+        },
+        "Songs":{
+            "properties":{
+              "docs": {
+                "type" : "array",
+                "items" : {
+                    "$ref" : "#definitions/Song"
+                }
+              },
+              "total": {
+                "type" : "integer"
+              },
+              "pages": {
+                "type" : "integer"
+              },
+              "limit": {
+                "type" : "integer"
+              },
+              "page" : {
+                  "type" : "integer"
+              }
+            }
+          },
+          "UpdateSong":{
+            "properties":{
+              "title": {
+                "type" : "string"
+              },
+              "url": {
+                "type" : "string"
+              },
+              "rating": {
+                "type" : "integer",
+                "format" :"Int32"
+              }
+            }
+          }
+      }
+}
