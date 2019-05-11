@@ -13,12 +13,70 @@
         {
           "name": "Songs",
           "description": "API for Songs Endpoints"
+        },
+        {
+          "name": "Users",
+          "description": "API for Users Endpoints"
         }
       ],
       "schemes": ["http"],
       "consumes": ["application/json"],
       "produces": ["application/json"],
       "paths" : {
+          "/users/signup" : {
+            "post" : {
+              "tags" : ["Users"],
+              "summary" : "API Endpoint for Create User",
+              "description" : "Create new User in Database",
+              "parameters" : [
+                  {
+                    "name" : "User",
+                    "description" : "User params to create new user",
+                    "in" : "body",
+                    "required" : "true",
+                    "schema" : {
+                        "$ref" : "#definitions/User"
+                    } 
+                  }
+              ],
+              "produces" : ["application/json"],
+              "responses" : {
+                  "200" : {
+                      "description" : "New User has Created",
+                      "schema" : {
+                          "$ref" : "#definitions/SignupRsp"
+                      }
+                  }
+              }
+          }
+          },
+          "/users/login" : {
+            "post" : {
+              "tags" : ["Users"],
+              "summary" : "API Endpoint to Login the User",
+              "description" : "Login User",
+              "parameters" : [
+                  {
+                    "name" : "User",
+                    "description" : "User params to login",
+                    "in" : "body",
+                    "required" : "true",
+                    "schema" : {
+                        "$ref" : "#definitions/UserLogin"
+                    } 
+                  }
+              ],
+              "produces" : ["application/json"],
+              "responses" : {
+                  "200" : {
+                      "description" : "User has logged in",
+                      "schema" : {
+                          "$ref" : "#definitions/UserLoginRsp"
+                      }
+                  }
+              }
+          }
+          },
           "/songs" : {
               "post" : {
                   "tags" : ["Songs"],
@@ -33,6 +91,13 @@
                         "schema" : {
                             "$ref" : "#definitions/Song"
                         } 
+                      },
+                      {
+                        "name" : "authorization",
+                        "description" : "Access token to authorize the user",
+                        "in" : "header",
+                        "type" : "string",
+                        "required" : "true"
                       }
                   ],
                   "produces" : ["application/json"],
@@ -61,7 +126,14 @@
                         "type" : "integer",
                         "description" : "Define the limit for the records i.e 10",
                         "in" : "query" 
-                      }
+                    },
+                    {
+                      "name" : "authorization",
+                      "description" : "Access token to authorize the user",
+                      "in" : "header",
+                      "type" : "string",
+                      "required" : "true"
+                    }
                 ],
                 "produces" : ["application/json"],
                 "responses" : {
@@ -82,6 +154,13 @@
                       "required" : "true",
                       "description" : "ID of the song",
                       "type" : "string"
+                  },
+                  {
+                    "name" : "authorization",
+                    "description" : "Access token to authorize the user",
+                    "in" : "header",
+                    "type" : "string",
+                    "required" : "true"
                   }
               ],
               "get" : {
@@ -139,6 +218,51 @@
           }
       },
       "definitions":{
+        "SignupRsp" : {
+          "properties" : {
+            "success" : {
+              "type" : "boolean"
+            }
+          }
+        },
+        "User":{
+          "required": ["firstName","lastName", "email", "password"],
+          "properties":{
+            "_id": {
+              "type" : "string"
+            },
+            "firstName": {
+              "type" : "string"
+            },
+            "lastName": {
+              "type" : "string"
+            },
+            "email": {
+              "type" : "string"
+            },
+            "password": {
+              "type" : "string"
+            }
+          }
+        },
+        "UserLogin":{
+          "required": ["email", "password"],
+          "properties":{
+            "email": {
+              "type" : "string"
+            },
+            "password": {
+              "type" : "string"
+            }
+          }
+        },
+        "UserLoginRsp":{
+          "properties":{
+            "token": {
+              "type" : "string"
+            }
+          }
+        },
         "Song":{
           "required": ["title","url"],
           "properties":{
@@ -178,20 +302,20 @@
                   "type" : "integer"
               }
             }
-          },
-          "UpdateSong":{
-            "properties":{
-              "title": {
-                "type" : "string"
-              },
-              "url": {
-                "type" : "string"
-              },
-              "rating": {
-                "type" : "integer",
-                "format" :"Int32"
-              }
+        },
+        "UpdateSong":{
+          "properties":{
+            "title": {
+              "type" : "string"
+            },
+            "url": {
+              "type" : "string"
+            },
+            "rating": {
+              "type" : "integer",
+              "format" :"Int32"
             }
           }
+        }
       }
 }
