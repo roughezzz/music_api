@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate';
 
 const { Schema } = mongoose;
-const userSchema = new Schema({
+const songSchema = new Schema({
     title: {
         type: String,
         required: [true, 'Songs must have title']
@@ -18,6 +18,6 @@ const userSchema = new Schema({
         max: 5
     }
 });
-userSchema.plugin(mongoosePaginate);
+songSchema.plugin(mongoosePaginate);
 
-export default mongoose.model('Song', userSchema);
+export default mongoose.model('Song', songSchema);
