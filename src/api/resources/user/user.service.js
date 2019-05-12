@@ -16,7 +16,8 @@ export default {
             firstName: Joi.string().required(),
             lastName: Joi.string().required(),
             email: Joi.string().email().required(),
-            password: Joi.string().required()
+            password: Joi.string().required(),
+            role: Joi.number().integer() 
         });
 
         const {value, error} = Joi.validate(body, schema);
